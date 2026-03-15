@@ -1,0 +1,196 @@
+/* ========================================
+   Windows 7 Aero Style CSS
+   包含：窗口、控件、任务栏等核心样式
+   ======================================== */
+
+/* --- 1. 全局重置与基础设置 --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 12px;
+    color: #333;
+    /* Windows 7 默认壁纸背景色（备用） */
+    background-color: #5896c2; 
+    overflow: hidden;
+}
+
+/* --- 2. 核心窗口样式 (Aero Glass) --- */
+.win7-window {
+    position: absolute;
+    min-width: 200px;
+    min-height: 100px;
+    background: #f5f5f5;
+    border: 1px solid #005a9e;
+    border-radius: 6px 6px 0 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3), 
+                inset 0 0 1px rgba(255, 255, 255, 0.6);
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+}
+
+/* 标题栏 */
+.win7-titlebar {
+    height: 30px;
+    background: linear-gradient(to bottom, 
+        rgba(120, 170, 220, 0.95) 0%, 
+        rgba(60, 120, 180, 0.95) 50%, 
+        rgba(40, 90, 150, 0.95) 51%, 
+        rgba(60, 130, 190, 0.95) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px;
+    cursor: default;
+    border-radius: 5px 5px 0 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    user-select: none;
+}
+
+/* 窗口激活状态 */
+.win7-window.active .win7-titlebar {
+    background: linear-gradient(to bottom, 
+        rgba(180, 210, 250, 0.95) 0%, 
+        rgba(100, 160, 220, 0.95) 50%, 
+        rgba(60, 120, 190, 0.95) 51%, 
+        rgba(90, 150, 210, 0.95) 100%);
+}
+
+.win7-title {
+    color: white;
+    font-size: 12px;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+    margin-left: 4px;
+}
+
+/* 窗口控制按钮 (最小化/最大化/关闭) */
+.win7-controls {
+    display: flex;
+    gap: 2px;
+}
+
+.win7-btn {
+    width: 26px;
+    height: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 10px;
+    cursor: pointer;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.win7-btn:hover {
+    background: rgba(255, 255, 255, 0.4);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.win7-btn.close:hover {
+    background: #e04343;
+    border-color: #c12e2a;
+}
+
+/* 窗口内容区域 */
+.win7-content {
+    flex-grow: 1;
+    background: white;
+    border: 1px solid #ddd;
+    margin: 0;
+    overflow: auto;
+    padding: 10px;
+}
+
+/* --- 3. 经典按钮样式 --- */
+.win7-button {
+    min-width: 75px;
+    height: 23px;
+    padding: 0 12px;
+    font-size: 12px;
+    color: #333;
+    background: linear-gradient(to bottom, #f5f5f5, #e3e3e3);
+    border: 1px solid #003c74;
+    border-radius: 3px;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.win7-button:hover {
+    background: linear-gradient(to bottom, #eaf6fd, #d9f0fc);
+    border-color: #2a8dd4;
+}
+
+.win7-button:active {
+    background: linear-gradient(to bottom, #e5f4fc, #c4e6f9);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* --- 4. 输入框样式 --- */
+.win7-input {
+    height: 22px;
+    padding: 2px 4px;
+    border: 1px solid #7eb4ea;
+    border-radius: 2px;
+    font-size: 12px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.win7-input:focus {
+    border-color: #5d9dd5;
+    box-shadow: 0 0 5px rgba(93, 157, 213, 0.5);
+}
+
+/* --- 5. 任务栏样式 --- */
+.win7-taskbar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 44px;
+    background: linear-gradient(to bottom, 
+        rgba(120, 160, 200, 0.9) 0%, 
+        rgba(50, 90, 140, 0.9) 100%);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* 开始按钮 */
+.win7-start-btn {
+    width: 60px;
+    height: 100%;
+    background: linear-gradient(to bottom, #4a9e4a, #2d6a2d);
+    border: none;
+    border-radius: 0 10px 0 0;
+    color: white;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.win7-start-btn:hover {
+    background: linear-gradient(to bottom, #5cb85c, #3d8b3d);
+}
+
+/* 托盘区域 */
+.win7-tray {
+    margin-left: auto;
+    color: white;
+    font-size: 12px;
+    padding: 0 15px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+    text-shadow: 1px 1px 1px black;
+}
