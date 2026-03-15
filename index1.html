@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网页版 Windows 7 界面演示</title>
+    <style>
+        /* 全局重置 */
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+        body {
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            /* Windows 7 默认壁纸 */
+            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Windows_7_default-wallpaper.jpg/1920px-Windows_7_default-wallpaper.jpg') center/cover no-repeat;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+        }
+
+        /* 桌面图标区域 (暂略) */
+        #desktop {
+            width: 100%;
+            height: calc(100% - 40px);
+            padding: 10px;
+        }
+
+        /* 任务栏 */
+        #taskbar {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(to bottom, rgba(60, 100, 150, 0.95), rgba(30, 60, 100, 0.95));
+            border-top: 1px solid rgba(255,255,255,0.3);
+            display: flex;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        /* 开始按钮 */
+        #start-btn {
+            width: 54px;
+            height: 100%;
+            background: linear-gradient(to bottom, #4a9e4a, #2d6a2d);
+            border: none;
+            border-radius: 0 8px 0 0;
+            color: white;
+            font-weight: bold;
+            font-style: italic;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
+        }
+        #start-btn:hover { background: linear-gradient(to bottom, #5cb85c, #3d8b3d); }
+
+        /* 任务栏图标占位 */
+        .taskbar-items { flex-grow: 1; padding-left: 10px; display: flex; }
+        
+        /* 托盘区 */
+        #tray {
+            width: 100px;
+            height: 100%;
+            background: rgba(0,0,0,0.2);
+            border-left: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 开始菜单 */
+        #start-menu {
+            position: absolute;
+            bottom: 40px;
+            left: 0;
+            width: 400px;
+            height: 500px;
+            background: rgba(240, 245, 250, 0.98);
+            border: 1px solid #0046ad;
+            border-bottom: none;
+            display: none; /* 默认隐藏 */
+            flex-direction: column;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
+            z-index: 9998;
+        }
+        .start-header {
+            height: 60px; background: linear-gradient(to right, #1e3c72, #2a5298);
+            display: flex; align-items: center; padding: 0 15px; color: white; font-size: 18px;
+        }
+        .start-content {
+            flex-grow: 1; display: flex;
+        }
+        .start-left { width: 60%; padding: 10px; border-right: 1px solid #ccc; }
+        .start-right { width: 40%; padding: 10px; background: #e8e8e8; }
+        
+        .menu-item {
+            padding: 8px 10px; cursor: pointer; border-radius: 3px; font-size: 13px; color: #333;
+        }
+        .menu-item:hover { background: #308cc6; color: white; }
+
+        /* 窗口样式 */
+        .window {
+            position: absolute;
+            width: 600px;
+            height: 400px;
+            background: #f0f0f0;
+            border: 1px solid #005a9e;
+            border-radius: 6px 6px 0 0;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            top: 100px;
+            left: 100px;
+            z-index: 100;
+        }
+        .title-bar {
+            height: 30px;
+            background: linear-gradient(to bottom, #4a90c2, #1c5a9e);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px;
+            cursor: default;
+            border-radius: 5px 5px 0 0;
+        }
+        .title-text { color: white; font-size: 12px; text-shadow: 1px 1px 1px black; }
+        .window-controls { display: flex; gap: 2px; }
+        .control-btn {
+            width: 26px; height: 20px; border: none; background: rgba(255,255,255,0.1); color: white;
+            font-size: 10px; cursor: pointer; border-radius: 2px;
+        }
+        .control-btn:hover { background: rgba(255,255,255,0.3); }
+        .control-btn.close:hover { background: #e04343; }
+        
+        .window-content {
+            flex-grow: 1;
+            background: white;
+            padding: 10px;
+            overflow: auto;
+            font-size: 14px;
+            color: #333;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="desktop">
+        <!-- 我的电脑图标 (简单示例) -->
+    </div>
+
+    <!-- 示例窗口 -->
+    <div class="window" id="my-computer">
+        <div class="title-bar" onmousedown="dragWindow(event, 'my-computer')">
+            <span class="title-text">计算机</span>
+            <div class="window-controls">
+                <button class="control-btn">−</button>
+                <button class="control-btn">□</button>
+                <button class="control-btn close" onclick="closeWindow('my-computer')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <h3>欢迎使用网页版 Windows 7 演示</h3>
+            <p>这是一个由 HTML, CSS 和 JavaScript 构建的简单界面模拟。</p>
+            <p>你可以拖动标题栏来移动这个窗口。</p>
+        </div>
+    </div>
+
+    <!-- 开始菜单 -->
+    <div id="start-menu">
+        <div class="start-header">
+            <span style="font-weight:bold;">Windows 7</span> 网页版
+        </div>
+        <div class="start-content">
+            <div class="start-left">
+                <div class="menu-item" onclick="openWindow('my-computer')">📁 打开计算机</div>
+                <div class="menu-item" onclick="alert('记事本功能开发中...')">📝 记事本</div>
+                <div class="menu-item" onclick="alert('这只是一个网页演示 :)')">🖼️ 画图</div>
+            </div>
+            <div class="start-right">
+                <div class="menu-item">文档</div>
+                <div class="menu-item">图片</div>
+                <div class="menu-item">控制面板</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 任务栏 -->
+    <div id="taskbar">
+        <button id="start-btn" onclick="toggleStartMenu()">开始</button>
+        <div class="taskbar-items"></div>
+        <div id="tray" id="clock">
+            12:00
+        </div>
+    </div>
+
+    <script>
+        // 1. 开始菜单逻辑
+        function toggleStartMenu() {
+            const menu = document.getElementById('start-menu');
+            if (menu.style.display === 'flex') {
+                menu.style.display = 'none';
+            } else {
+                menu.style.display = 'flex';
+            }
+        }
+
+        // 点击桌面其他地方关闭开始菜单
+        document.addEventListener('click', function(e) {
+            const menu = document.getElementById('start-menu');
+            const btn = document.getElementById('start-btn');
+            if (!menu.contains(e.target) && !btn.contains(e.target)) {
+                menu.style.display = 'none';
+            }
+        });
+
+        // 2. 窗口拖动逻辑
+        let isDragging = false;
+        let currentWindowId = null;
+        let offsetX = 0, offsetY = 0;
+
+        function dragWindow(e, id) {
+            isDragging = true;
+            currentWindowId = id;
+            const win = document.getElementById(id);
+            // 计算鼠标相对于窗口左上角的偏移
+            offsetX = e.clientX - win.offsetLeft;
+            offsetY = e.clientY - win.offsetTop;
+            
+            // 窗口置顶
+            win.style.zIndex = 1000;
+        }
+
+        document.onmousemove = function(e) {
+            if (isDragging && currentWindowId) {
+                const win = document.getElementById(currentWindowId);
+                win.style.left = (e.clientX - offsetX) + 'px';
+                win.style.top = (e.clientY - offsetY) + 'px';
+            }
+        };
+
+        document.onmouseup = function() {
+            isDragging = false;
+            currentWindowId = null;
+        };
+
+        // 3. 简单的窗口控制
+        function closeWindow(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        function openWindow(id) {
+            const win = document.getElementById(id);
+            win.style.display = 'flex';
+            win.style.zIndex = 1000; // 置顶
+            toggleStartMenu(); // 关闭开始菜单
+        }
+
+        // 4. 时钟
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('tray').innerText = now.toLocaleTimeString();
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html>
